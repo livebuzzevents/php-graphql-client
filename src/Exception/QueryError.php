@@ -25,12 +25,17 @@ class QueryError extends RuntimeException
      */
     public function __construct($errorDetails)
     {
-        $this->errorDetails = $errorDetails['errors'][0];
-        parent::__construct($this->errorDetails['message']);
+        $errorString = '';
+
+        foreach ($errorDetails['errors'] as $errorDetail) {
+            $errorString .= $errorDetail['message'] . " [" . $errorDetail['extensions']['code'] . "] \n";
+        }
+
+        $this->errorDetails = $errorString;
     }
 
     /**
-     * @return array
+     * @return string
      */
     public function getErrorDetails()
     {
